@@ -1,4 +1,7 @@
 # DFPlayer - A Mini MP3 Player For Arduino
+
+**THIS LIBRARY IS NOT COMPATIBLE WITH ARDUINO.ORG. PLEASE USE THE IDE FROM ARDUINO.CC**
+
 DFPlayer - A Mini MP3 Player For Arduino
 
 https://www.dfrobot.com/index.php?route=product/product&product_id=1121
