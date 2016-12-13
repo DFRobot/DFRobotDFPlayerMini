@@ -24,14 +24,14 @@ void DFRobotDFPlayerMini::uint16ToArray(uint16_t value, uint8_t *array){
 
 uint16_t DFRobotDFPlayerMini::calculateCheckSum(uint8_t *buffer){
   uint16_t sum = 0;
-  for (int i=Stack::Version; i<Stack::CheckSum; i++) {
+  for (int i=Stack_Version; i<Stack_CheckSum; i++) {
     sum += buffer[i];
   }
   return -sum;
 }
 
 void DFRobotDFPlayerMini::sendStack(){
-  if (_sending[Stack::ACK]) {
+  if (_sending[Stack_ACK]) {
     while (_isSending) {
       available();
     }
@@ -51,7 +51,7 @@ void DFRobotDFPlayerMini::sendStack(){
 #endif
   _serial->write(_sending, DFPLAYER_SEND_LENGTH);
   _timeOutTimer = millis();
-  _isSending = _sending[Stack::ACK];
+  _isSending = _sending[Stack_ACK];
 }
 
 void DFRobotDFPlayerMini::sendStack(uint8_t command){
@@ -59,9 +59,9 @@ void DFRobotDFPlayerMini::sendStack(uint8_t command){
 }
 
 void DFRobotDFPlayerMini::sendStack(uint8_t command, uint16_t argument){
-  _sending[Stack::Command] = command;
-  uint16ToArray(argument, _sending+Stack::Parameter);
-  uint16ToArray(calculateCheckSum(_sending), _sending+Stack::CheckSum);
+  _sending[Stack_Command] = command;
+  uint16ToArray(argument, _sending+Stack_Parameter);
+  uint16ToArray(calculateCheckSum(_sending), _sending+Stack_CheckSum);
   sendStack();
 }
 
@@ -72,17 +72,17 @@ void DFRobotDFPlayerMini::sendStack(uint8_t command, uint8_t argumentHigh, uint8
 }
 
 void DFRobotDFPlayerMini::enableACK(){
-  _sending[Stack::ACK] = 0x01;
+  _sending[Stack_ACK] = 0x01;
 }
 
 void DFRobotDFPlayerMini::disableACK(){
-  _sending[Stack::ACK] = 0x00;
+  _sending[Stack_ACK] = 0x00;
 }
 
 bool DFRobotDFPlayerMini::waitAvailable(){
   _isSending = true;
   while (!available());
-  return _handleType != HandleType::TimeOut;
+  return _handleType != TimeOut;
 }
 
 bool DFRobotDFPlayerMini::begin(Stream &stream, bool isACK){
@@ -102,7 +102,7 @@ bool DFRobotDFPlayerMini::begin(Stream &stream, bool isACK){
   return (readType() == DFPlayerCardOnline) || !isACK;
 }
 
-HandleType DFRobotDFPlayerMini::readType(){
+uint8_t DFRobotDFPlayerMini::readType(){
   _isAvailable = false;
   return _handleType;
 }
@@ -112,7 +112,7 @@ uint16_t DFRobotDFPlayerMini::read(){
   return _handleParameter;
 }
 
-bool DFRobotDFPlayerMini::handleMessage(HandleType type, uint16_t parameter){
+bool DFRobotDFPlayerMini::handleMessage(uint8_t type, uint16_t parameter){
   _receivedIndex = 0;
   _handleType = type;
   _handleParameter = parameter;
@@ -120,7 +120,7 @@ bool DFRobotDFPlayerMini::handleMessage(HandleType type, uint16_t parameter){
   return _isAvailable;
 }
 
-bool DFRobotDFPlayerMini::handleError(HandleType type, uint16_t parameter){
+bool DFRobotDFPlayerMini::handleError(uint8_t type, uint16_t parameter){
   handleMessage(type, parameter);
   _isSending = false;
 }
@@ -131,30 +131,30 @@ uint8_t DFRobotDFPlayerMini::readCommand(){
 }
 
 void DFRobotDFPlayerMini::parseStack(){
-  _handleCommand = *(_received + Stack::Command);
-  _handleParameter =  arrayToUint16(_received + Stack::Parameter);
+  _handleCommand = *(_received + Stack_Command);
+  _handleParameter =  arrayToUint16(_received + Stack_Parameter);
 
   switch (_handleCommand) {
     case 0x3D:
-      handleMessage(HandleType::DFPlayerPlayFinished, _handleParameter);
+      handleMessage(DFPlayerPlayFinished, _handleParameter);
       break;
     case 0x3F:
       if (_handleParameter & 0x02) {
-        handleMessage(HandleType::DFPlayerCardOnline, _handleParameter);
+        handleMessage(DFPlayerCardOnline, _handleParameter);
       }
       break;
     case 0x3A:
       if (_handleParameter & 0x02) {
-        handleMessage(HandleType::DFPlayerCardInserted, _handleParameter);
+        handleMessage(DFPlayerCardInserted, _handleParameter);
       }
       break;
     case 0x3B:
       if (_handleParameter & 0x02) {
-        handleMessage(HandleType::DFPlayerCardRemoved, _handleParameter);
+        handleMessage(DFPlayerCardRemoved, _handleParameter);
       }
       break;
     case 0x40:
-      handleMessage(HandleType::DFPlayerError, _handleParameter);
+      handleMessage(DFPlayerError, _handleParameter);
       break;
     case 0x41:
       _isSending = false;
@@ -190,19 +190,19 @@ uint16_t DFRobotDFPlayerMini::arrayToUint16(uint8_t *array){
 }
 
 bool DFRobotDFPlayerMini::validateStack(){
-  return calculateCheckSum(_received) == arrayToUint16(_received+Stack::CheckSum);
+  return calculateCheckSum(_received) == arrayToUint16(_received+Stack_CheckSum);
 }
 
 bool DFRobotDFPlayerMini::available(){
   while (_serial->available()) {
     if (_receivedIndex == 0) {
-      _received[Stack::Header] = _serial->read();
+      _received[Stack_Header] = _serial->read();
 #ifdef _DEBUG
       Serial.print(F("received:"));
       Serial.print(_received[_receivedIndex],HEX);
       Serial.print(F(" "));
 #endif
-      if (_received[Stack::Header] == 0x7E) {
+      if (_received[Stack_Header] == 0x7E) {
         _isAvailable = false;
         _receivedIndex ++;
       }
@@ -214,17 +214,17 @@ bool DFRobotDFPlayerMini::available(){
       Serial.print(F(" "));
 #endif
       switch (_receivedIndex) {
-        case Stack::Version:
+        case Stack_Version:
           if (_received[_receivedIndex] != 0xFF) {
             return handleError(WrongStack);
           }
           break;
-        case Stack::Length:
+        case Stack_Length:
           if (_received[_receivedIndex] != 0x06) {
             return handleError(WrongStack);
           }
           break;
-        case Stack::End:
+        case Stack_End:
 #ifdef _DEBUG
           Serial.println();
 #endif
@@ -235,7 +235,7 @@ bool DFRobotDFPlayerMini::available(){
             if (validateStack()) {
               _receivedIndex = 0;
               parseStack();
-              if (_isAvailable && !_sending[Stack::ACK]) {
+              if (_isAvailable && !_sending[Stack_ACK]) {
                 _isSending = false;
               }
               return _isAvailable;

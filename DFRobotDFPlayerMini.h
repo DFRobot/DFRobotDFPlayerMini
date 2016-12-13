@@ -35,26 +35,30 @@
 
 //#define _DEBUG
 
-enum HandleType{
-  TimeOut,
-  WrongStack,
-  DFPlayerCardInserted,
-  DFPlayerCardRemoved,
-  DFPlayerCardOnline,
-  DFPlayerPlayFinished,
-  DFPlayerError
-};
+#define TimeOut 0
+#define WrongStack 1
+#define DFPlayerCardInserted 2
+#define DFPlayerCardRemoved 3
+#define DFPlayerCardOnline 4
+#define DFPlayerPlayFinished 5
+#define DFPlayerError 6
 
-enum DFPlayerErrorType{
-  Busy = 1,
-  Sleeping,
-  SerialWrongStack,
-  CheckSumNotMatch,
-  FileIndexOut,
-  FileMismatch,
-  Advertise
-};
+#define Busy 1
+#define Sleeping 2
+#define SerialWrongStack 3
+#define CheckSumNotMatch 4
+#define FileIndexOut 5
+#define FileMismatch 6
+#define Advertise 7
 
+#define Stack_Header 0
+#define Stack_Version 1
+#define Stack_Length 2
+#define Stack_Command 3
+#define Stack_ACK 4
+#define Stack_Parameter 5
+#define Stack_CheckSum 7
+#define Stack_End 9
 
 class DFRobotDFPlayerMini {
   Stream* _serial;
@@ -88,28 +92,16 @@ class DFRobotDFPlayerMini {
   
   uint8_t device = DFPLAYER_DEVICE_SD;
   
-  
-  enum Stack{
-    Header = 0,
-    Version = 1,
-    Length = 2,
-    Command = 3,
-    ACK = 4,
-    Parameter = 5,
-    CheckSum = 7,
-    End = 9
-  };
-  
   public:
   
-  HandleType _handleType;
+  uint8_t _handleType;
   uint8_t _handleCommand;
   uint16_t _handleParameter;
   bool _isAvailable = false;
   bool _isSending = false;
   
-  bool handleMessage(HandleType type, uint16_t parameter = 0);
-  bool handleError(HandleType type, uint16_t parameter = 0);
+  bool handleMessage(uint8_t type, uint16_t parameter = 0);
+  bool handleError(uint8_t type, uint16_t parameter = 0);
 
   uint8_t readCommand();
   
@@ -119,7 +111,7 @@ class DFRobotDFPlayerMini {
   
   bool available();
   
-  HandleType readType();
+  uint8_t readType();
   
   uint16_t read();
   
