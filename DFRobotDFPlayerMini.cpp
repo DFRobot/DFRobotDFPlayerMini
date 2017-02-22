@@ -33,6 +33,7 @@ uint16_t DFRobotDFPlayerMini::calculateCheckSum(uint8_t *buffer){
 void DFRobotDFPlayerMini::sendStack(){
   if (_sending[Stack_ACK]) {
     while (_isSending) {
+      delay(1);
       available();
     }
   }
@@ -81,7 +82,7 @@ void DFRobotDFPlayerMini::disableACK(){
 
 bool DFRobotDFPlayerMini::waitAvailable(){
   _isSending = true;
-  while (!available());
+  while (!available()) delay(1);
   return _handleType != TimeOut;
 }
 
@@ -92,7 +93,7 @@ bool DFRobotDFPlayerMini::begin(Stream &stream, bool isACK){
   else{
     disableACK();
   }
-  
+
   _serial = &stream;
   _timeOutDuration += 3000;
   reset();
@@ -251,11 +252,11 @@ bool DFRobotDFPlayerMini::available(){
       _receivedIndex++;
     }
   }
-  
+
   if (_isSending && (millis()-_timeOutTimer>=_timeOutDuration)) {
     return handleError(TimeOut);
   }
-  
+
   return _isAvailable;
 }
 
@@ -394,7 +395,7 @@ int DFRobotDFPlayerMini::readVolume(){
 
 uint8_t DFRobotDFPlayerMini::readEQ(){
   sendStack(0x44);
-  while (!available());
+  while (!available()) delay(1);
   if (waitAvailable()) {
     return read();
   }
@@ -417,7 +418,7 @@ int DFRobotDFPlayerMini::readFileCounts(uint8_t device){
     default:
       break;
   }
-  
+
   if (waitAvailable()) {
     return read();
   }
@@ -465,5 +466,3 @@ int DFRobotDFPlayerMini::readFileCounts(){
 int DFRobotDFPlayerMini::readCurrentFileNumber(){
   readCurrentFileNumber(DFPLAYER_DEVICE_SD);
 }
-
-
