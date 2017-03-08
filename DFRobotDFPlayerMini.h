@@ -186,6 +186,8 @@ class DFRobotDFPlayerMini {
   int readFileCountsInFolder(int folderNumber);
   
   int readFileCounts();
+
+  int readFolderCounts();
   
   int readCurrentFileNumber();
   
