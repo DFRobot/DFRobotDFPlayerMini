@@ -33,6 +33,7 @@ uint16_t DFRobotDFPlayerMini::calculateCheckSum(uint8_t *buffer){
 void DFRobotDFPlayerMini::sendStack(){
   if (_sending[Stack_ACK]) {
     while (_isSending) {
+      delay(0);
       available();
     }
   }
@@ -81,7 +82,9 @@ void DFRobotDFPlayerMini::disableACK(){
 
 bool DFRobotDFPlayerMini::waitAvailable(){
   _isSending = true;
-  while (!available());
+  while (!available()){
+    delay(0);
+  }
   return _handleType != TimeOut;
 }
 
@@ -195,6 +198,7 @@ bool DFRobotDFPlayerMini::validateStack(){
 
 bool DFRobotDFPlayerMini::available(){
   while (_serial->available()) {
+    delay(0);
     if (_receivedIndex == 0) {
       _received[Stack_Header] = _serial->read();
 #ifdef _DEBUG
@@ -394,7 +398,6 @@ int DFRobotDFPlayerMini::readVolume(){
 
 uint8_t DFRobotDFPlayerMini::readEQ(){
   sendStack(0x44);
-  while (!available());
   if (waitAvailable()) {
     return read();
   }

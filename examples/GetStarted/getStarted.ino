@@ -1,11 +1,11 @@
 /***************************************************
 DFPlayer - A Mini MP3 Player For Arduino
- <https://www.dfrobot.com/index.php?route=product/product&product_id=1121>
+ <https://www.dfrobot.com/index.php?route=product/product&search=mp3&description=true&product_id=1121>
  
  ***************************************************
  This example shows the basic function of library for DFPlayer.
  
- Created 2016-12-07
+ Created 2014-8-28
  By [Angelo qiao](Angelo.qiao@dfrobot.com)
  
  GNU Lesser General Public License.
@@ -15,7 +15,7 @@ DFPlayer - A Mini MP3 Player For Arduino
 
 /***********Notice and Trouble shooting***************
  1.Connection and Diagram can be found here
- <https://www.dfrobot.com/wiki/index.php/DFPlayer_Mini_SKU:DFR0299#Connection_Diagram>
+ <>
  2.This code is tested on Arduino Uno, Leonardo, Mega boards.
  ****************************************************/
 
@@ -40,7 +40,9 @@ void setup()
     Serial.println(F("Unable to begin:"));
     Serial.println(F("1.Please recheck the connection!"));
     Serial.println(F("2.Please insert the SD card!"));
-    while(true);
+    while(true){
+      delay(0); // Code to compatible with ESP8266 watch dog.
+    }
   }
   Serial.println(F("DFPlayer Mini online."));
   
