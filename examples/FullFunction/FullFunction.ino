@@ -1,13 +1,13 @@
 /***************************************************
  DFPlayer - A Mini MP3 Player For Arduino
  <https://www.dfrobot.com/index.php?route=product/product&product_id=1121>
- 
+
  ***************************************************
  This example shows the all the function of library for DFPlayer.
- 
+
  Created 2016-12-07
  By [Angelo qiao](Angelo.qiao@dfrobot.com)
- 
+
  GNU Lesser General Public License.
  See <http://www.gnu.org/licenses/> for details.
  All above must be included in any redistribution
@@ -31,26 +31,26 @@ void setup()
 {
   mySoftwareSerial.begin(9600);
   Serial.begin(115200);
-  
+
   Serial.println();
   Serial.println(F("DFRobot DFPlayer Mini Demo"));
   Serial.println(F("Initializing DFPlayer ... (May take 3~5 seconds)"));
-  
+
   if (!myDFPlayer.begin(mySoftwareSerial)) {  //Use softwareSerial to communicate with mp3.
     Serial.println(F("Unable to begin:"));
     Serial.println(F("1.Please recheck the connection!"));
     Serial.println(F("2.Please insert the SD card!"));
-    while(true);
+    while(true) delay(1);
   }
   Serial.println(F("DFPlayer Mini online."));
-  
+
   myDFPlayer.setTimeOut(500); //Set serial communictaion time out 500ms
-  
+
   //----Set volume----
   myDFPlayer.volume(10);  //Set volume value (0~30).
   myDFPlayer.volumeUp(); //Volume Up
   myDFPlayer.volumeDown(); //Volume Down
-  
+
   //----Set different EQ----
   myDFPlayer.EQ(DFPLAYER_EQ_NORMAL);
 //  myDFPlayer.EQ(DFPLAYER_EQ_POP);
@@ -58,21 +58,21 @@ void setup()
 //  myDFPlayer.EQ(DFPLAYER_EQ_JAZZ);
 //  myDFPlayer.EQ(DFPLAYER_EQ_CLASSIC);
 //  myDFPlayer.EQ(DFPLAYER_EQ_BASS);
-  
+
   //----Set device we use SD as default----
 //  myDFPlayer.outputDevice(DFPLAYER_DEVICE_U_DISK);
   myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
 //  myDFPlayer.outputDevice(DFPLAYER_DEVICE_AUX);
 //  myDFPlayer.outputDevice(DFPLAYER_DEVICE_SLEEP);
 //  myDFPlayer.outputDevice(DFPLAYER_DEVICE_FLASH);
-  
+
   //----Mp3 control----
 //  myDFPlayer.sleep();     //sleep
 //  myDFPlayer.reset();     //Reset the module
 //  myDFPlayer.enableDAC();  //Enable On-chip DAC
 //  myDFPlayer.disableDAC();  //Disable On-chip DAC
 //  myDFPlayer.outputSetting(true, 15); //output setting, enable the output and set the gain to 15
-  
+
   //----Mp3 play----
   myDFPlayer.next();  //Play next mp3
   delay(1000);
@@ -121,12 +121,12 @@ void setup()
 void loop()
 {
   static unsigned long timer = millis();
-  
+
   if (millis() - timer > 3000) {
     timer = millis();
     myDFPlayer.next();  //Play next mp3 every 3 second.
   }
-  
+
   if (myDFPlayer.available()) {
     printDetail(myDFPlayer.readType(), myDFPlayer.read()); //Print the detail message from DFPlayer to handle different errors and states.
   }
