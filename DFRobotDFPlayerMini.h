@@ -105,7 +105,7 @@ class DFRobotDFPlayerMini {
 
   uint8_t readCommand();
   
-  bool begin(Stream& stream, bool isACK = true);
+  bool begin(Stream& stream, bool isACK = true, bool doReset = true);
   
   bool waitAvailable();
   
