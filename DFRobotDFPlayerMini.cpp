@@ -126,6 +126,7 @@ bool DFRobotDFPlayerMini::handleMessage(uint8_t type, uint16_t parameter){
 bool DFRobotDFPlayerMini::handleError(uint8_t type, uint16_t parameter){
   handleMessage(type, parameter);
   _isSending = false;
+  return false;
 }
 
 uint8_t DFRobotDFPlayerMini::readCommand(){
@@ -472,11 +473,11 @@ int DFRobotDFPlayerMini::readFolderCounts(){
 }
 
 int DFRobotDFPlayerMini::readFileCounts(){
-  readFileCounts(DFPLAYER_DEVICE_SD);
+  return readFileCounts(DFPLAYER_DEVICE_SD);
 }
 
 int DFRobotDFPlayerMini::readCurrentFileNumber(){
-  readCurrentFileNumber(DFPLAYER_DEVICE_SD);
+  return readCurrentFileNumber(DFPLAYER_DEVICE_SD);
 }
 
 
