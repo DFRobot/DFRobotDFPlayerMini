@@ -88,7 +88,7 @@ bool DFRobotDFPlayerMini::waitAvailable(){
   return _handleType != TimeOut;
 }
 
-bool DFRobotDFPlayerMini::begin(Stream &stream, bool isACK){
+bool DFRobotDFPlayerMini::begin(Stream &stream, bool isACK, bool doReset){
   if (isACK) {
     enableACK();
   }
@@ -97,11 +97,18 @@ bool DFRobotDFPlayerMini::begin(Stream &stream, bool isACK){
   }
   
   _serial = &stream;
-  _timeOutDuration += 3000;
-  reset();
-  waitAvailable();
-  _timeOutDuration -= 3000;
-  delay(200);
+
+  if (doReset) {
+    _timeOutDuration += 3000;
+    reset();
+    waitAvailable();
+    _timeOutDuration -= 3000;
+    delay(200);
+  } else {
+    // assume same state as with reset(): online
+    _handleType = DFPlayerCardOnline;
+  }
+
   return (readType() == DFPlayerCardOnline) || !isACK;
 }
 
