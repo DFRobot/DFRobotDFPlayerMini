@@ -7,8 +7,8 @@
  * @copyright	GNU Lesser General Public License
  *
  * @author [Angelo](Angelo.qiao@dfrobot.com)
- * @version  V1.0
- * @date  2016-12-07
+ * @version  V1.0.3
+ * @date  2017-12-03
  */
 
 #include "DFRobotDFPlayerMini.h"
@@ -104,12 +104,13 @@ bool DFRobotDFPlayerMini::begin(Stream &stream, bool isACK, bool doReset){
     waitAvailable();
     _timeOutDuration -= 3000;
     delay(200);
-  } else {
+  } 
+  else {
     // assume same state as with reset(): online
     _handleType = DFPlayerCardOnline;
   }
 
-  return (readType() == DFPlayerCardOnline) || !isACK;
+  return (readType() == DFPlayerCardOnline) || (readType() == DFPlayerUSBOnline) || !isACK;
 }
 
 uint8_t DFRobotDFPlayerMini::readType(){
@@ -150,17 +151,29 @@ void DFRobotDFPlayerMini::parseStack(){
       handleMessage(DFPlayerPlayFinished, _handleParameter);
       break;
     case 0x3F:
-      if (_handleParameter & 0x02) {
+      if (_handleParameter & 0x01) {
+        handleMessage(DFPlayerUSBOnline, _handleParameter);
+      }
+	  else if (_handleParameter & 0x02) {
         handleMessage(DFPlayerCardOnline, _handleParameter);
+      }
+	  else if (_handleParameter & 0x03) {
+        handleMessage(DFPlayerCardUSBOnline, _handleParameter);
       }
       break;
     case 0x3A:
-      if (_handleParameter & 0x02) {
+	  if (_handleParameter & 0x01) {
+        handleMessage(DFPlayerUSBInserted, _handleParameter);
+      }
+      else if (_handleParameter & 0x02) {
         handleMessage(DFPlayerCardInserted, _handleParameter);
       }
       break;
     case 0x3B:
-      if (_handleParameter & 0x02) {
+	  if (_handleParameter & 0x01) {
+        handleMessage(DFPlayerUSBRemoved, _handleParameter);
+      }
+      else if (_handleParameter & 0x02) {
         handleMessage(DFPlayerCardRemoved, _handleParameter);
       }
       break;
