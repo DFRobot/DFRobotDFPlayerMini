@@ -7,8 +7,8 @@
  * @copyright	GNU Lesser General Public License
  *
  * @author [Angelo](Angelo.qiao@dfrobot.com)
- * @version  V1.0
- * @date  2016-12-07
+ * @version  V1.0.3
+ * @date  2017-12-03
  */
 
 #include "Arduino.h"
@@ -42,6 +42,10 @@
 #define DFPlayerCardOnline 4
 #define DFPlayerPlayFinished 5
 #define DFPlayerError 6
+#define DFPlayerUSBInserted 7
+#define DFPlayerUSBRemoved 8
+#define DFPlayerUSBOnline 9
+#define DFPlayerCardUSBOnline 10
 
 #define Busy 1
 #define Sleeping 2

@@ -39,7 +39,7 @@ void setup()
   if (!myDFPlayer.begin(mySoftwareSerial)) {  //Use softwareSerial to communicate with mp3.
     Serial.println(F("Unable to begin:"));
     Serial.println(F("1.Please recheck the connection!"));
-    Serial.println(F("2.Please insert the SD card!"));
+    Serial.println(F("2.Please insert the SD card or USB drive!"));
     while(true){
       delay(0); // Code to compatible with ESP8266 watch dog.
     }
@@ -80,6 +80,12 @@ void printDetail(uint8_t type, int value){
       break;
     case DFPlayerCardOnline:
       Serial.println(F("Card Online!"));
+      break;
+	case DFPlayerUSBInserted:
+      Serial.println("USB Inserted!");
+      break;
+    case DFPlayerUSBRemoved:
+      Serial.println("USB Removed!");
       break;
     case DFPlayerPlayFinished:
       Serial.print(F("Number:"));
