@@ -1,11 +1,11 @@
 /***************************************************
 DFPlayer - A Mini MP3 Player For Arduino
- <https://www.dfrobot.com/index.php?route=product/product&search=mp3&description=true&product_id=1121>
+ <https://www.dfrobot.com/product-1121.html>
  
  ***************************************************
  This example shows the basic function of library for DFPlayer.
  
- Created 2014-8-28
+ Created 2016-12-07
  By [Angelo qiao](Angelo.qiao@dfrobot.com)
  
  GNU Lesser General Public License.
@@ -15,7 +15,7 @@ DFPlayer - A Mini MP3 Player For Arduino
 
 /***********Notice and Trouble shooting***************
  1.Connection and Diagram can be found here
- <>
+ <https://www.dfrobot.com/wiki/index.php/DFPlayer_Mini_SKU:DFR0299#Connection_Diagram>
  2.This code is tested on Arduino Uno, Leonardo, Mega boards.
  ****************************************************/
 

@@ -1,6 +1,6 @@
 /***************************************************
  DFPlayer - A Mini MP3 Player For Arduino
- <https://www.dfrobot.com/index.php?route=product/product&product_id=1121>
+ <https://www.dfrobot.com/product-1121.html>
  
  ***************************************************
  This example shows the all the function of library for DFPlayer.
@@ -115,7 +115,7 @@ void setup()
   Serial.println(myDFPlayer.readEQ()); //read EQ setting
   Serial.println(myDFPlayer.readFileCounts()); //read all file counts in SD card
   Serial.println(myDFPlayer.readCurrentFileNumber()); //read current play file number
-  Serial.println(myDFPlayer.readFileCountsInFolder(3)); //read fill counts in folder SD:/03
+  Serial.println(myDFPlayer.readFileCountsInFolder(3)); //read file counts in folder SD:/03
 }
 
 void loop()
