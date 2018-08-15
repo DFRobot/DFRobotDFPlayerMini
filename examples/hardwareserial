@@ -1,0 +1,25 @@
+
+//new example for hardware serial
+//hardware serial is useful for those using nodemcu / esp8266 and have minimal gpio pins available.
+//simply connect nodemcu / esp tx to Rx of dfplayer, power, gnd, speakers, that's it! 
+//use below in setup and everything else remains as is in full function example
+//if you need to update sketch, pull out tx -> rx wire. I've tried with http web update and it does not need any wires to be changed.
+
+#include "DFRobotDFPlayerMini.h"
+
+DFRobotDFPlayerMini myDFPlayer;
+
+void setup(void){
+
+myDFPlayer.begin(Serial); //Use hardware Serial to communicate with mp3 player.
+  delay(1);  //wait 1ms for mp3 module to set volume
+  myDFPlayer.volume(20);  // mp3_set_volume (20);
+  delay(2);
+
+  Serial.begin(9600);
+    delay(10);
+    
+  Serial.println();
+  Serial.println("ESP starting .....");
+  
+  // beyond this, all regular code according to your sketch or full function example...
