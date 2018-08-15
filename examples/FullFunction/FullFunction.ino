@@ -149,6 +149,12 @@ void printDetail(uint8_t type, int value){
     case DFPlayerCardOnline:
       Serial.println(F("Card Online!"));
       break;
+    case DFPlayerUSBInserted:
+      Serial.println("USB Inserted!");
+      break;
+    case DFPlayerUSBRemoved:
+      Serial.println("USB Removed!");
+      break;
     case DFPlayerPlayFinished:
       Serial.print(F("Number:"));
       Serial.print(value);
@@ -185,4 +191,6 @@ void printDetail(uint8_t type, int value){
     default:
       break;
   }
+  
 }
+

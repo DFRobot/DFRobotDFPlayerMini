@@ -1,11 +1,12 @@
 /***************************************************
-DFPlayer - A Mini MP3 Player For Arduino
+ DFPlayer - A Mini MP3 Player For Arduino
  <https://www.dfrobot.com/product-1121.html>
  
  ***************************************************
  This example shows the basic function of library for DFPlayer.
  
  Created 2016-12-07
+ Modified 2018-08-15
  By [Angelo qiao](Angelo.qiao@dfrobot.com)
  
  GNU Lesser General Public License.
@@ -39,24 +40,36 @@ void setup()
   if (!myDFPlayer.begin(mySoftwareSerial)) {  //Use softwareSerial to communicate with mp3.
     Serial.println(F("Unable to begin:"));
     Serial.println(F("1.Please recheck the connection!"));
-    Serial.println(F("2.Please insert the SD card!"));
+    Serial.println(F("2.Please insert the SD card or USB drive!"));
     while(true){
       delay(0); // Code to compatible with ESP8266 watch dog.
     }
   }
   Serial.println(F("DFPlayer Mini online."));
-  
-  myDFPlayer.volume(10);  //Set volume value. From 0 to 30
-  myDFPlayer.play(1);  //Play the first mp3
 }
 
 void loop()
 {
   static unsigned long timer = millis();
-  
+
   if (millis() - timer > 3000) {
     timer = millis();
-    myDFPlayer.next();  //Play next mp3 every 3 second.
+    
+    int value;
+
+//    value = myDFPlayer.readState(); //read mp3 state
+//    value = myDFPlayer.readVolume(); //read current volume
+//    value = myDFPlayer.readEQ(); //read EQ setting
+//    value = myDFPlayer.readFileCounts(); //read all file counts in SD card
+//    value = myDFPlayer.readCurrentFileNumber(); //read current play file number
+    value = myDFPlayer.readFileCountsInFolder(3); //read file counts in folder SD:/03
+    
+    if (value == -1) {  //Error while Reading.
+      printDetail(myDFPlayer.readType(), myDFPlayer.read());
+    }
+    else{ //Successfully get the result.
+      Serial.println(value);
+    }
   }
   
   if (myDFPlayer.available()) {
