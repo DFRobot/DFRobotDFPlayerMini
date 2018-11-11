@@ -69,7 +69,7 @@ class DFRobotDFPlayerMini {
   Stream* _serial;
   
   unsigned long _timeOutTimer;
-  unsigned long _timeOutDuration = 500;
+  unsigned long _timeOutDuration = 5000;
   
   uint8_t _received[DFPLAYER_RECEIVED_LENGTH];
   uint8_t _sending[DFPLAYER_SEND_LENGTH] = {0x7E, 0xFF, 06, 00, 01, 00, 00, 00, 00, 0xEF};
