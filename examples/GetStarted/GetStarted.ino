@@ -35,6 +35,10 @@ void setup()
   Serial.println();
   Serial.println(F("DFRobot DFPlayer Mini Demo"));
   Serial.println(F("Initializing DFPlayer ... (May take 3~5 seconds)"));
+ 
+ // Serial1.begin(9600);               //Mega2560
+ // myDFPlayer.setTimeOut(1000);       //Set serial communictaion time out 1000 ms = 1 sec
+ // if (!myDFPlayer.begin(Serial1)) {  //Use Hardware Serial to communicate with mp3.
   
   if (!myDFPlayer.begin(mySoftwareSerial)) {  //Use softwareSerial to communicate with mp3.
     Serial.println(F("Unable to begin:"));
