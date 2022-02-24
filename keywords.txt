@@ -1,0 +1,88 @@
+#######################################
+# Syntax Coloring Map For DFRobotDFPlayerMini
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DFRobotDFPlayerMini	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+volume	KEYWORD2
+volumeUp	KEYWORD2
+volumeDown	KEYWORD2
+EQ	KEYWORD2
+outputDevice	KEYWORD2
+play	KEYWORD2
+next	KEYWORD2
+previous	KEYWORD2
+loop	KEYWORD2
+pause	KEYWORD2
+start	KEYWORD2
+playFolder	KEYWORD2
+enableLoopAll	KEYWORD2
+disableLoopAll	KEYWORD2
+playMp3Folder	KEYWORD2
+readType	KEYWORD2
+advertise	KEYWORD2
+stopAdvertise	KEYWORD2
+playLargeFolder	KEYWORD2
+loopFolder	KEYWORD2
+randomAll	KEYWORD2
+enableLoop	KEYWORD2
+disableLoop	KEYWORD2
+readState	KEYWORD2
+readVolume	KEYWORD2
+readEQ	KEYWORD2
+readFileCounts	KEYWORD2
+readCurrentFileNumber	KEYWORD2
+readFileCountsInFolder	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+DFPLAYER_EQ_NORMAL	LITERAL1
+DFPLAYER_EQ_POP	LITERAL1
+DFPLAYER_EQ_ROCK	LITERAL1
+DFPLAYER_EQ_JAZZ	LITERAL1
+DFPLAYER_EQ_CLASSIC	LITERAL1
+DFPLAYER_EQ_BASS	LITERAL1
+DFPLAYER_DEVICE_U_DISK	LITERAL1
+DFPLAYER_DEVICE_SD	LITERAL1
+DFPLAYER_DEVICE_AUX	LITERAL1
+DFPLAYER_DEVICE_SLEEP	LITERAL1
+DFPLAYER_DEVICE_FLASH	LITERAL1
+DFPLAYER_RECEIVED_LENGTH	LITERAL1
+DFPLAYER_SEND_LENGTH	LITERAL1
+TimeOut	LITERAL1
+WrongStack	LITERAL1
+DFPlayerCardInserted	LITERAL1
+DFPlayerCardRemoved	LITERAL1
+DFPlayerCardOnline	LITERAL1
+DFPlayerUSBInserted	LITERAL1
+DFPlayerUSBRemoved	LITERAL1
+DFPlayerPlayFinished	LITERAL1
+DFPlayerError	LITERAL1
+Busy	LITERAL1
+Sleeping	LITERAL1
+SerialWrongStack	LITERAL1
+CheckSumNotMatch	LITERAL1
+FileIndexOut	LITERAL1
+FileMismatch	LITERAL1
+Advertise	LITERAL1
+Stack_Header	LITERAL1
+Stack_Version	LITERAL1
+Stack_Length	LITERAL1
+Stack_Command	LITERAL1
+Stack_ACK	LITERAL1
+Stack_Parameter	LITERAL1
+Stack_CheckSum	LITERAL1
+Stack_End	LITERAL1
+DFPLAYER_DEVICE_SLEEP	LITERAL1
+DFPLAYER_DEVICE_FLASH	LITERAL1
