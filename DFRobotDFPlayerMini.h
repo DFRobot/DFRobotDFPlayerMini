@@ -4,11 +4,13 @@
  * @n Header file for DFRobot's DFPlayer
  *
  * @copyright	[DFRobot]( http://www.dfrobot.com ), 2016
+ * @copyright kaharman <l.kaharman@gmail.com>, 2022
  * @copyright	GNU Lesser General Public License
  *
  * @author [Angelo](Angelo.qiao@dfrobot.com)
- * @version  V1.0.3
- * @date  2016-12-07
+ * @author [kaharman](l.kaharman@gmail.com)
+ * @version  V1.1.0
+ * @date  2022-02-25
  */
 
 #include "Arduino.h"
@@ -30,8 +32,13 @@
 #define DFPLAYER_DEVICE_SLEEP 4
 #define DFPLAYER_DEVICE_FLASH 5
 
+#ifdef MH_ET_LIVE
+#define DFPLAYER_RECEIVED_LENGTH 8
+#define DFPLAYER_SEND_LENGTH 8
+#else
 #define DFPLAYER_RECEIVED_LENGTH 10
 #define DFPLAYER_SEND_LENGTH 10
+#endif
 
 //#define _DEBUG
 
@@ -62,8 +69,12 @@
 #define Stack_Command 3
 #define Stack_ACK 4
 #define Stack_Parameter 5
+#ifdef MH_ET_LIVE
+#define Stack_End 7
+#else
 #define Stack_CheckSum 7
 #define Stack_End 9
+#endif
 
 class DFRobotDFPlayerMini {
   Stream* _serial;
@@ -72,7 +83,11 @@ class DFRobotDFPlayerMini {
   unsigned long _timeOutDuration = 500;
   
   uint8_t _received[DFPLAYER_RECEIVED_LENGTH];
+#ifdef MH_ET_LIVE
+  uint8_t _sending[DFPLAYER_SEND_LENGTH] = {0x7E, 0xFF, 06, 00, 01, 00, 00, 0xEF};
+#else
   uint8_t _sending[DFPLAYER_SEND_LENGTH] = {0x7E, 0xFF, 06, 00, 01, 00, 00, 00, 00, 0xEF};
+#endif
   
   uint8_t _receivedIndex=0;
 
@@ -88,12 +103,15 @@ class DFRobotDFPlayerMini {
   
   uint16_t arrayToUint16(uint8_t *array);
   
+#ifndef MH_ET_LIVE
   uint16_t calculateCheckSum(uint8_t *buffer);
-  
+#endif  
 
 
   void parseStack();
+#ifndef MH_ET_LIVE
   bool validateStack();
+#endif
   
   uint8_t device = DFPLAYER_DEVICE_SD;
   

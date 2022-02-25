@@ -4,11 +4,13 @@
  * @n Header file for DFRobot's DFPlayer
  *
  * @copyright	[DFRobot]( http://www.dfrobot.com ), 2016
+ * @copyright kaharman <l.kaharman@gmail.com>, 2022
  * @copyright	GNU Lesser General Public License
  *
  * @author [Angelo](Angelo.qiao@dfrobot.com)
- * @version  V1.0.3
- * @date  2016-12-07
+ * @author [kaharman](l.kaharman@gmail.com)
+ * @version  V1.1.0
+ * @date  2022-02-25
  */
 
 #include "DFRobotDFPlayerMini.h"
@@ -22,6 +24,7 @@ void DFRobotDFPlayerMini::uint16ToArray(uint16_t value, uint8_t *array){
   *(array+1) = (uint8_t)(value);
 }
 
+#ifndef MH_ET_LIVE
 uint16_t DFRobotDFPlayerMini::calculateCheckSum(uint8_t *buffer){
   uint16_t sum = 0;
   for (int i=Stack_Version; i<Stack_CheckSum; i++) {
@@ -29,6 +32,7 @@ uint16_t DFRobotDFPlayerMini::calculateCheckSum(uint8_t *buffer){
   }
   return -sum;
 }
+#endif
 
 void DFRobotDFPlayerMini::sendStack(){
   if (_sending[Stack_ACK]) {  //if the ack mode is on wait until the last transmition
@@ -63,7 +67,9 @@ void DFRobotDFPlayerMini::sendStack(uint8_t command){
 void DFRobotDFPlayerMini::sendStack(uint8_t command, uint16_t argument){
   _sending[Stack_Command] = command;
   uint16ToArray(argument, _sending+Stack_Parameter);
+#ifndef MH_ET_LIVE
   uint16ToArray(calculateCheckSum(_sending), _sending+Stack_CheckSum);
+#endif
   sendStack();
 }
 
@@ -221,9 +227,11 @@ uint16_t DFRobotDFPlayerMini::arrayToUint16(uint8_t *array){
   return value;
 }
 
-bool DFRobotDFPlayerMini::validateStack(){
+#ifndef MH_ET_LIVE
+  bool DFRobotDFPlayerMini::validateStack(){
   return calculateCheckSum(_received) == arrayToUint16(_received+Stack_CheckSum);
 }
+#endif
 
 bool DFRobotDFPlayerMini::available(){
   while (_serial->available()) {
@@ -263,8 +271,13 @@ bool DFRobotDFPlayerMini::available(){
           if (_received[_receivedIndex] != 0xEF) {
             return handleError(WrongStack);
           }
-          else{
-            if (validateStack()) {
+          else
+          {
+#ifdef MH_ET_LIVE
+            parseStack();
+            return _isAvailable;
+#else
+              if (validateStack()) {
               _receivedIndex = 0;
               parseStack();
               return _isAvailable;
@@ -272,6 +285,7 @@ bool DFRobotDFPlayerMini::available(){
             else{
               return handleError(WrongStack);
             }
+#endif
           }
           break;
         default:

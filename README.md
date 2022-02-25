@@ -1,5 +1,13 @@
 # DFPlayer - A Mini MP3 Player For Arduino
 
+This is forked version from original DFPlayer library to support **MH2024K-xxSS** chip. 
+If you use DFPlayer Mini with MH2024K series chip set
+
+```c
+#define MH_ET_LIVE
+```
+
+before include file ```DFRobotDFPlayerMini.h```.
 
 DFPlayer - A Mini MP3 Player For Arduino
 https://www.dfrobot.com/index.php?route=product/product&product_id=1121
