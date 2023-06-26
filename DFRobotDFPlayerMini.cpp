@@ -34,7 +34,7 @@ void DFRobotDFPlayerMini::sendStack(){
   if (_sending[Stack_ACK]) {  //if the ack mode is on wait until the last transmition
     while (_isSending) {
       delay(0);
-      available();
+      waitAvailable();
     }
   }
 
@@ -88,7 +88,7 @@ bool DFRobotDFPlayerMini::waitAvailable(unsigned long duration){
   }
   while (!available()){
     if (millis() - timer > duration) {
-      return false;
+      return handleError(TimeOut);
     }
     delay(0);
   }
@@ -281,9 +281,6 @@ bool DFRobotDFPlayerMini::available(){
     }
   }
   
-  if (_isSending && (millis()-_timeOutTimer>=_timeOutDuration)) {
-    return handleError(TimeOut);
-  }
   
   return _isAvailable;
 }
