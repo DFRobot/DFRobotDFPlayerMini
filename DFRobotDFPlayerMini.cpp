@@ -158,6 +158,7 @@ void DFRobotDFPlayerMini::parseStack(){
   _handleParameter =  arrayToUint16(_received + Stack_Parameter);
 
   switch (_handleCommand) {
+    case 0x3C:
     case 0x3D:
       handleMessage(DFPlayerPlayFinished, _handleParameter);
       break;
@@ -191,7 +192,6 @@ void DFRobotDFPlayerMini::parseStack(){
     case 0x40:
       handleMessage(DFPlayerError, _handleParameter);
       break;
-    case 0x3C:
     case 0x3E:
     case 0x42:
     case 0x43:
