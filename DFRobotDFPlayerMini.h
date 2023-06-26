@@ -7,7 +7,7 @@
  * @copyright	GNU Lesser General Public License
  *
  * @author [Angelo](Angelo.qiao@dfrobot.com)
- * @version  V1.0.3
+ * @version  V1.0.6
  * @date  2016-12-07
  */
 
